@@ -1,0 +1,20 @@
+<section ng-controller="ChildrenController" ng-init="find()">
+  <div class="page-header">
+    <h1>Children</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="child in children" ui-sref="children.view({childId: child._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="child.created | date:'mediumDate'"></span>
+        by
+        <span ng-bind="child.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="child.title"></h4>
+      <p class="list-group-item-text" ng-bind="child.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="children.$resolved && !children.length">
+    No children yet, why don't you <a ui-sref="children.create">create one</a>?
+  </div>
+</section>
