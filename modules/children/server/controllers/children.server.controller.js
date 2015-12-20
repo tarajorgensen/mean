@@ -11,11 +11,12 @@ var path = require('path'),
 /**
  * Create a child
  */
-exports.create = function (req, res) {
+exports.create = function(req, res) {
   var child = new Child(req.body);
+  child.name = req.body.firstName + ' ' + req.body.lastName;
   child.user = req.user;
 
-  child.save(function (err) {
+  child.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -29,14 +30,14 @@ exports.create = function (req, res) {
 /**
  * Show the current child
  */
-exports.read = function (req, res) {
+exports.read = function(req, res) {
   res.json(req.child);
 };
 
 /**
  * Update a child
  */
-exports.update = function (req, res) {
+exports.update = function(req, res) {
   var child = req.child;
 
   child.title = req.body.title;
