@@ -7,7 +7,7 @@ var childrenPolicy = require('../policies/children.server.policy.js'),
   children = require('../controllers/children.server.controller.js');
 
 module.exports = function (app) {
-  // Articles collection routes
+  // Children collection routes
   app.route('/api/children').all(childrenPolicy.isAllowed)
     .get(children.list)
     .post(children.create);

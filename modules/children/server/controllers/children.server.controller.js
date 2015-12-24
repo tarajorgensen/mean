@@ -13,7 +13,8 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var child = new Child(req.body);
-  child.name = req.body.firstName + ' ' + req.body.lastName;
+  child.firstName = req.body.firstName;
+  child.lastName = req.body.lastName;
   child.user = req.user;
 
   child.save(function(err) {
@@ -40,7 +41,8 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
   var child = req.child;
 
-  child.title = req.body.title;
+  child.firstName = req.body.firstName;
+  child.lastName = req.body.lastName;
   child.content = req.body.content;
 
   child.save(function (err) {

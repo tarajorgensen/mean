@@ -1,160 +1,125 @@
 'use strict';
 
+// Children controller
 angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children',
-    function ($scope, $stateParams, $location, Authentication, Children) {
-      $scope.authentication = Authentication;
-      $scope.toggleDropdown = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-      };
-//		$scope.gender;
-      $scope.items = [
-        'Boy',
-        'Girl'
-      ];
+  function ($scope, $stateParams, $location, Authentication, Children) {
+    $scope.authentication = Authentication;
 
-      $scope.today = function () {
-        $scope.dt = new Date();
-      };
-      $scope.today();
+    $scope.today = function () {
+      $scope.dt = new Date();
+    };
+    $scope.today();
 
-      $scope.clear = function () {
-        $scope.dt = null;
-      };
+    $scope.clear = function () {
+      $scope.dt = null;
+    };
 
-        // Disable weekend selection
-      $scope.disabled = function (date, mode) {
-        return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
-      };
+    $scope.toggleMin = function() {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+    $scope.maxDate = new Date();
+    var year = $scope.maxDate.getFullYear();
+    var month = $scope.maxDate.getMonth();
+    var day = $scope.maxDate.getDate();
+    $scope.minStartDate = new Date(year-5,month,day);
 
-        //$scope.toggleMin = function() {
-        //	$scope.minDate = $scope.minDate ? null : new Date();
-        //};
-        //$scope.toggleMin();
 
-      var current = new Date();
-      $scope.maxDate = current;
+    // Create new Child
+    $scope.create = function (isValid) {
+      $scope.error = null;
 
-      $scope.minDate = new Date(current.getYear() - 5, current.getMonth(), current.getDay());
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'childForm');
 
-      $scope.open = function ($event) {
-        $scope.status.opened = true;
-      };
+        return false;
+      }
 
-      $scope.setDate = function (year, month, day) {
-        $scope.dt = new Date(year, month, day);
-      };
+      $scope.birthDay = this.dt.getDate();
+      $scope.birthYear = this.dt.getFullYear();
+      $scope.birthMonth = this.dt.getMonth();
 
-      $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 1
-      };
+      var yearIn = $scope.dt.getFullYear();
+      var monthIn = $scope.dt.getMonth();
+      var dateIn = $scope.dt.getDate();
+      var child = new Children({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        weight: this.weight,
+        height: this.height,
+        birthYear: this.birthDay,
+        birthMonth: this.birthMonth,
+        birthDay: this.birthYear,
+        content: this.comment,
+        father: this.father,
+        mother: this.mother,
+        branch: this.branch
+      });
 
-      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-      $scope.format = $scope.formats[1];
+      child.$save(function (response) {
+        $location.path('children/' + response._id);
+        $scope.weight = '';
+        $scope.height = '';
+        $scope.firstName = '';
+        $scope.lastName = '';
+        $scope.content = '';
+        $scope.birthYear = '';
+        $scope.birthMonth = '';
+        $scope.birthDay = '';
+        $scope.father = '';
+        $scope.mother = '';
+        $scope.branch = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
 
-      $scope.status = {
-        opened: false
-      };
+    // Remove existing Child
+    $scope.remove = function (child) {
+      if (child) {
+        child.$remove();
 
-      var tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      var afterTomorrow = new Date();
-      afterTomorrow.setDate(tomorrow.getDate() + 2);
-      $scope.events =
-      [
-        {
-          date: tomorrow,
-          status: 'full'
-        },
-        {
-          date: afterTomorrow,
-          status: 'partially'
-        }
-      ];
-
-      $scope.getDayClass = function (date, mode) {
-        if (mode === 'day') {
-          var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-
-          for (var i = 0; i < $scope.events.length; i++) {
-            var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
-
-            if (dayToCheck === currentDay) {
-              return $scope.events[i].status;
-            }
+        for (var i in $scope.children) {
+          if ($scope.children[i] === child) {
+            $scope.children.splice(i, 1);
           }
         }
-
-        return '';
-      };
-      $scope.create = function () {
-        var child = new Children({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          weight: this.weight,
-          height: this.height,
-          birthYear: this.birthYear,
-          birthMonth: this.birthMonth,
-          birthDay: this.birthDay,
-          content: this.comment,
-          father: this.father,
-          mother: this.mother,
-          branch: this.branch
+      } else {
+        $scope.child.$remove(function () {
+          $location.path('children');
         });
-        child.$save(function (response) {
-          $location.path('children/' + response._id);
-          $scope.weight = '';
-          $scope.height = '';
-          $scope.firstName = '';
-          $scope.lastName = '';
-          $scope.content = '';
-          $scope.birthYear = '';
-          $scope.birthMonth = '';
-          $scope.birthDay = '';
-          $scope.father = '';
-          $scope.mother = '';
-          $scope.branch = '';
-        }, function (errorResponse) {
-          $scope.error = errorResponse.data.message;
-        });
-      };
+      }
+    };
 
-      $scope.remove = function (child) {
-        if (child) {
-          child.$remove();
+    // Update existing Child
+    $scope.update = function (isValid) {
+      $scope.error = null;
 
-          for (var i in $scope.children) {
-            if ($scope.children[i] === child) {
-              $scope.children.splice(i, 1);
-            }
-          }
-        } else {
-          $scope.child.$remove(function () {
-            $location.path('children');
-          });
-        }
-      };
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'childForm');
 
-      $scope.update = function () {
-        var child = $scope.child;
+        return false;
+      }
 
-        child.$update(function () {
-          $location.path('children/' + child._id);
-        }, function (errorResponse) {
-          $scope.error = errorResponse.data.message;
-        });
-      };
+      var child = $scope.child;
 
-      $scope.find = function () {
-        $scope.children = Children.query();
-      };
+      child.$update(function () {
+        $location.path('children/' + child._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
 
-      $scope.findOne = function () {
-        $scope.child = Children.get({
-          childId: $stateParams.childId
-        });
-      };
-    }
+    // Find a list of Children
+    $scope.find = function () {
+      $scope.children = Children.query();
+    };
+
+    // Find existing Child
+    $scope.findOne = function () {
+      $scope.child = Children.get({
+        childId: $stateParams.childId
+      });
+    };
+  }
 ]);
