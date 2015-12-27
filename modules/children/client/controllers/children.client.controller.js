@@ -5,6 +5,15 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
   function ($scope, $stateParams, $location, Authentication, Children) {
     $scope.authentication = Authentication;
 
+    $scope.checkFirstNameIsValid = function(){
+      if($scope.firstName.length < 1 || $scope.firstName.length > 25){
+        $scope.firstNameIsValid = false;
+      }
+      else{
+        $scope.firstNameIsValid = true;
+      }
+    };
+
     $scope.today = function () {
       $scope.dt = new Date();
     };
@@ -24,6 +33,10 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
     var day = $scope.maxDate.getDate();
     $scope.minStartDate = new Date(year-5,month,day);
 
+    $scope.childInfoString = function(child){
+      return child.firstName + ' ' + child.lastName +
+            ' Birth Date: ' + child.birthMonth + '/' + child.birthDay + '/' + child.birthYear;
+    };
 
     // Create new Child
     $scope.create = function (isValid) {
@@ -39,9 +52,6 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
       $scope.birthYear = this.dt.getFullYear();
       $scope.birthMonth = this.dt.getMonth();
 
-      var yearIn = $scope.dt.getFullYear();
-      var monthIn = $scope.dt.getMonth();
-      var dateIn = $scope.dt.getDate();
       var child = new Children({
         firstName: this.firstName,
         lastName: this.lastName,
@@ -50,10 +60,10 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
         birthYear: this.birthDay,
         birthMonth: this.birthMonth,
         birthDay: this.birthYear,
-        content: this.comment,
+        comments: this.comments,
         father: this.father,
-        mother: this.mother,
-        branch: this.branch
+        mother: this.mother
+ //       branch: this.branch
       });
 
       child.$save(function (response) {
@@ -62,13 +72,13 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
         $scope.height = '';
         $scope.firstName = '';
         $scope.lastName = '';
-        $scope.content = '';
+        $scope.comments = '';
         $scope.birthYear = '';
         $scope.birthMonth = '';
         $scope.birthDay = '';
         $scope.father = '';
         $scope.mother = '';
-        $scope.branch = '';
+   //     $scope.branch = '';
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

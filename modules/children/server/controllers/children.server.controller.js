@@ -13,10 +13,18 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var child = new Child(req.body);
+  child.weight = req.body.weight;
+  child.height = req.body.height;
   child.firstName = req.body.firstName;
   child.lastName = req.body.lastName;
+  child.comments = req.body.comments;
+  child.birthYear = req.body.birthYear;
+  child.birthMonth = req.body.birthMonth;
+  child.birthDay = req.body.birthDay;
+  child.father = req.body.father;
+  child.mother = req.body.mother;
+  child.branch = req.body.branch;
   child.user = req.user;
-
   child.save(function(err) {
     if (err) {
       return res.status(400).send({
@@ -41,9 +49,18 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
   var child = req.child;
 
+  child.weight = req.body.weight;
+  child.height = req.body.height;
   child.firstName = req.body.firstName;
   child.lastName = req.body.lastName;
-  child.content = req.body.content;
+  child.comments = req.body.comments;
+  child.birthYear = req.body.birthYear;
+  child.birthMonth = req.body.birthMonth;
+  child.birthDay = req.body.birthDay;
+  child.father = req.body.father;
+  child.mother = req.body.mother;
+  child.branch = req.body.branch;
+  child.user = req.user;
 
   child.save(function (err) {
     if (err) {

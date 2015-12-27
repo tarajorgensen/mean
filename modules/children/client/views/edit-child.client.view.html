@@ -6,18 +6,106 @@
     <form name="childForm" class="form-horizontal" ng-submit="update(childForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label for="title">Title</label>
-          <input name="title" type="text" ng-model="child.title" id="title" class="form-control" placeholder="Title" required>
-          <div ng-messages="childForm.title.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Child title is required.</p>
+          <div class="row">
+            <div class="form-group col-md-6 "
+                 ng-class="{ 'has-error': childForm.firstName.$dirty && childForm.firstName.$invalid }">
+              <label class="control-label col-md-4" for="firstName">First Name</label>
+
+              <div class="controls">
+                <input name="First Name" type="text" ng-model="child.firstName" id="firstName"
+                       class="form-control col-md-2" placeholder="First Name" required>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="control-label col-md-4" for="lastName">Last Name</label>
+
+              <div class="controls">
+                <input name="Last Name" type="text" ng-model="child.lastName" id="lastName"
+                       class="form-control col-md-2"
+                       placeholder="Last Name" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="control-label col-md-4" for="weight">Gender</label>
+
+              <div class="controls">
+                <input name="Gender" type="text" ng-model="child.gender" id="gender"
+                       class="form-control col-md-2"
+                       placeholder="Gender" required>
+                <!--<select name="gender" class="form-control" multiple title="Select Gender">-->
+                <!--<option value="boy">Boy</option>-->
+                <!--<option value="girl">Girl</option>-->
+                <!--</select>-->
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="control-label col-md-4" for="weight">Birth Date</label>
+              <p class="input-group">
+                <input type="date" class="form-control" uib-datepicker-popup ng-model="dt"
+                       is-open="status.opened"
+                       min-date="minStartDate" max-date="maxDate" datepicker-options="dateOptions"
+                       ng-required="true" year-range="5"
+                       close-text="Close"/>
+              </p>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label class="control-label col-md-4" for="weight">Weight</label>
+
+                <div class="controls">
+                  <input name="Weight" type="text" ng-model="child.weight" id="weight"
+                         class="form-control col-md-2"
+                         placeholder="Weight" required>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label class="control-label col-md-4" for="height">Height</label>
+
+                <div class="controls">
+                  <input name="Height" type="text" ng-model="child.height" id="height"
+                         class="form-control col-md-2"
+                         placeholder="Height" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="control-label col-md-4" for="mother">Mother</label>
+
+              <div class="controls">
+                <input name="Mother" type="text" ng-model="child.mother" id="mother"
+                       class="form-control col-md-2"
+                       placeholder="Mother" required>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="control-label col-md-4" for="father">Father</label>
+
+              <div class="controls">
+                <input name="Father" type="text" ng-model="child.father" id="father"
+                       class="form-control col-md-2"
+                       placeholder="Father" required>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="content">Content</label>
-          <textarea name="content" ng-model="child.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+
+        <div class="row">
+          <div class="form-group">
+            <label class="control-label col-md-2" for="comments">Comments</label>
+
+            <div class="controls">
+                <textarea name="Comment" ng-model="child.comments" id="comments" class="form-control"
+                          cols="50" rows="5" placeholder="Comment"></textarea>
+            </div>
+          </div>
         </div>
+
         <div class="form-group">
-          <input type="submit" value="Update" class="btn btn-default">
+          <input type="submit"  value="Update" class="btn btn-default">
         </div>
         <div ng-show="error" class="text-danger">
           <strong ng-bind="error"></strong>

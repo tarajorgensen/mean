@@ -43,10 +43,20 @@ var ChildSchema = new Schema({
     trim: true,
     required: 'height cannot be blank'
   },
-  birthdate: {
+  birthDay: {
     type: String,
     default: '',
-    required: 'birthdate cannot be blank'
+    required: 'birthDay cannot be blank'
+  },
+  birthMonth: {
+    type: String,
+    default: '',
+    required: 'birthMonth cannot be blank'
+  },
+  birthYear: {
+    type: String,
+    default: '',
+    required: 'birthYear cannot be blank'
   },
   comments: {
     type: String,
@@ -63,11 +73,11 @@ var ChildSchema = new Schema({
     default: '',
     trim: true
   },
-  branch: {
-    type: String,
-    default: '',
-    trim: true
-  },
+  //branch: {
+  //  type: String,
+  //  default: '',
+  //  trim: true
+  //},
   user: {
     type: Schema.ObjectId,
     ref: 'User'
