@@ -14,6 +14,15 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
         'Girl'
       ];
 
+      $scope.checkFirstNameIsValid = function(){
+        if($scope.firstName.length < 1 || $scope.firstName.length > 25){
+          $scope.firstNameIsValid = false;
+        }
+        else{
+          $scope.firstNameIsValid = true;
+        }
+      };
+
       $scope.today = function () {
         $scope.dt = new Date();
       };
