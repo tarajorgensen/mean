@@ -5,13 +5,13 @@
   <div class="list-group">
     <a ng-repeat="child in children" ui-sref="children.view({childId: child._id})" class="list-group-item">
       <small class="list-group-item-text">
-        Posted on
+        Created on
         <span ng-bind="child.created | date:'mediumDate'"></span>
         by
         <span ng-bind="child.user.displayName"></span>
       </small>
-      <h4 class="list-group-item-heading" ng-bind="child.title"></h4>
-      <p class="list-group-item-text" ng-bind="child.content"></p>
+      <h4 class="list-group-item-heading" ng-bind="child.firstName"></h4>
+      <p class="list-group-item-text" ng-bind="child.LastName"></p>
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="children.$resolved && !children.length">

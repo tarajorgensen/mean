@@ -30,8 +30,8 @@ describe('Child Model Unit Tests:', function () {
 
     user.save(function () {
       child = new Child({
-        title: 'Child Title',
-        content: 'Child Content',
+        name: 'Child Name',
+        lastName: 'Child Last Name',
         user: user
       });
 
@@ -48,7 +48,7 @@ describe('Child Model Unit Tests:', function () {
       });
     });
 
-    it('should be able to show an error when try to save without title', function (done) {
+    it('should be able to show an error when try to save without first name', function (done) {
       child.title = '';
 
       return child.save(function (err) {
