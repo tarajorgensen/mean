@@ -524,7 +524,7 @@ angular.module('children').factory('ZScores', ['$log', function (console) {
     var ha = heightForAgeGirls[age];
     var wa = weightForAgeGirls[age];
     var wl = null;
-    for (i = 0; i < weightForLengthGirls.length; i++) {
+    for (var i = 0; i < weightForLengthGirls.length; i++) {
       if (weightForLengthGirls[i].y === height){
         wl = weightForLengthGirls[i];
         break;
