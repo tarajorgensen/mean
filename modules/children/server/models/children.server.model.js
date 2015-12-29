@@ -14,8 +14,8 @@ var ChildSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  name: {
-    type: String,
+  monthAge: {
+    type: Number,
     default: '',
     trim: true
   },
