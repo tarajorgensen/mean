@@ -13,6 +13,7 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var child = new Child(req.body);
+  child.monthAge = req.body.monthAge;
   child.weight = req.body.weight;
   child.height = req.body.height;
   child.firstName = req.body.firstName;
@@ -48,7 +49,7 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
   var child = req.child;
-
+  child.monthAge = req.body.monthAge;
   child.weight = req.body.weight;
   child.height = req.body.height;
   child.firstName = req.body.firstName;
