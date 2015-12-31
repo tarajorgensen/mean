@@ -7,7 +7,31 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
     $scope.ageIsValid = false;
     $scope.childHeightIsValid = false;
     $scope.childweightIsValid = false;
+    $scope.firstNameIsValid = true;
+    $scope.lastNameIsValid = true;
+    $scope.genderIsValid = true;
+    $scope.heightIsValid = true;
+    $scope.weightIsValid = true;
+    $scope.motherIsValid = true;
+    $scope.fatherIsValid = true;
 
+    $scope.checkAllFieldsValid = function () {
+      $scope.checkFirstNameIsValid();
+      $scope.checkLastNameIsValid();
+      $scope.checkGenderIsValid();
+      //       $scope.checkHeightIsValid();
+      //      $scope.checkWeightIsValid();
+      $scope.checkMotherIsValid();
+      $scope.checkFatherIsValid();
+
+
+      if ($scope.firstNameIsValid === true && $scope.lastNameIsValid === true && $scope.genderIsValid === true) {
+        $scope.allFieldsValid = true;
+      }
+      else {
+        $scope.allFieldsValid = false;
+      }
+    };
     $scope.calculateZScore = function(child){
       $scope.zScore = new ZScores(child);
     };
@@ -59,12 +83,64 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
       }
     };
 
-    $scope.checkFirstNameIsValid = function(){
-      if($scope.firstName.length < 1 || $scope.firstName.length > 25){
+    $scope.checkFirstNameIsValid = function () {
+      if ($scope.firstName) {
+        if ($scope.firstName.length < 1 || $scope.firstName.length > 25) {
+          $scope.firstNameIsValid = false;
+        }
+        else {
+          $scope.firstNameIsValid = true;
+        }
+      }
+      else {
         $scope.firstNameIsValid = false;
       }
-      else{
-        $scope.firstNameIsValid = true;
+    };
+    $scope.checkLastNameIsValid = function () {
+      if ($scope.lastName) {
+        if ($scope.lastName.length < 1 || $scope.lastName.length > 25) {
+          $scope.lastNameIsValid = false;
+        }
+        else {
+          $scope.lastNameIsValid = true;
+        }
+      }
+      else {
+        $scope.lastNameIsValid = false;
+      }
+    };
+    $scope.checkGenderIsValid = function () {
+      if ($scope.gender) {
+        $scope.genderIsValid = true;
+      }
+      else {
+        $scope.genderIsValid = false;
+      }
+    };
+    $scope.checkMotherIsValid = function () {
+      if ($scope.mother) {
+        if ($scope.mother.length < 1 || $scope.mother.length > 25) {
+          $scope.motherIsValid = false;
+        }
+        else {
+          $scope.motherIsValid = true;
+        }
+      }
+      else {
+        $scope.motherIsValid = false;
+      }
+    };
+    $scope.checkFatherIsValid = function () {
+      if ($scope.father) {
+        if ($scope.father.length < 1 || $scope.father.length > 25) {
+          $scope.fatherIsValid = false;
+        }
+        else {
+          $scope.fatherIsValid = true;
+        }
+      }
+      else {
+        $scope.fatherIsValid = false;
       }
     };
 

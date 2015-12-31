@@ -9,55 +9,99 @@
                   novalidate>
                 <fieldset>
                     <div class="row">
-                        <div class="form-group float-left" ng-class="{'has-error':(!firstNameIsValid)}">
-                            <label for="firstName" class="col-sm-2 control-label">First Name</label>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="text" ng-change="checkFirstNameIsValid()"
-                                       ng-model="firstName" id="firstName" placeholder="First Name"
-                                       required>
+                        <div class="form-group float-left">
+                            <div ng-class="{'has-error':(!firstNameIsValid)}">
+
+                                <label for="firstName" class="col-sm-2 control-label">First Name</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="text" ng-change="checkFirstNameIsValid()"
+                                           ng-model="firstName" id="firstName" placeholder="First Name"
+                                           required>
+                                    <div class="validationMessage" ng-if="!firstNameIsValid"><p>Please enter a valid
+                                        name</p></div>
+                                </div>
                             </div>
-                            <label for="lastName" class="col-sm-2 control-label">Last Name</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="lastName" id="lastName"
-                                       placeholder="Last Name"
-                                       required>
+                            <div ng-class="{'has-error':(!lastNameIsValid)}">
+                                <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+                                <div class="col-sm-4">
+                                    <input type="input" class="form-control" ng-change="checkLastNameIsValid()"
+                                           ng-model="lastName"
+                                           id="lastName"
+                                           placeholder="Last Name"
+                                           required>
+                                    <div class="validationMessage" ng-if="!lastNameIsValid"><p>Please enter a valid
+                                        name</p></div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="gender" class="col-sm-2 control-label">Gender</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="gender" id="gender"
-                                       placeholder="Gender" required>
+                            <div ng-class="{'has-error':(!genderIsValid)}">
+                                <label for="gender" class="col-sm-2 control-label">Gender</label>
+                                <div class="col-sm-4">
+                                    <div>
+                                        <select type="input" ng-change="checkGenderIsValid()" class="form-control"
+                                                ng-model="gender"
+                                                id="gender"
+                                                required>
+                                            <option>Girl</option>
+                                            <option>Boy</option>
+                                        </select>
+                                        <div class="validationMessage" ng-if="!genderIsValid"><p>Please select a
+                                            gender</p></div>
+                                    </div>
+                                </div>
                             </div>
-                            <label for="birthDate" class="col-sm-2 control-label">Birthdate</label>
+                            <label for="birthdate" class="col-sm-2 control-label">Birthdate</label>
                             <div class="col-sm-4">
-                                <input type="date" id="birthDate" ng-change="setMonthCount(child)" class="form-control" uib-datepicker-popup
+                                <input type="date" id="birthDate" ng-change="setMonthCount(child)" class="form-control"
+                                       uib-datepicker-popup
                                        ng-model="birthDate" ng-model-options="{debounce: 2500}"
                                        is-open="status.opened" required>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error':(!childHeightIsValid || !childWeightIsValid)}">
-                            <label for="height" class="col-sm-2 control-label">Height</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-change="checkHeightIsValid()" ng-model="height" id="height"
-                                       ng-model-options="{debounce: 1500}" placeholder="Height" required >
-                            </div>
-                            <label for="weight" class="col-sm-2 control-label">Weight</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-change="checkWeightIsValid()" ng-model="weight" id="weight"
-                                       ng-model-options="{debounce: 1500}" placeholder="Weight" required >
+                                <!--<div class="validationMessage" ng-if="!birthdateIsValid"><p>Please select a valid birthdate</p></div>-->
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mother" class="col-sm-2 control-label">Mother</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="mother" id="mother"
-                                       placeholder="Mother" required>
+                            <div ng-class="{'has-error':(!heightIsValid)}">
+                                <label for="height" class="col-sm-2 control-label">Height</label>
+                                <div class="col-sm-4">
+                                    <input type="input" class="form-control" ng-change="checkHeightIsValid()"
+                                           ng-model="height" id="height"
+                                           placeholder="Height" required>
+                                    <div class="validationMessage" ng-if="!heightIsValid"><p>Please enter a valid
+                                        height</p></div>
+                                </div>
                             </div>
-                            <label for="father" class="col-sm-2 control-label">Father</label>
-                            <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="father" id="father"
-                                       placeholder="Father" required>
+                            <div ng-class="{'has-error':(!weightIsValid)}">
+                                <label for="weight" class="col-sm-2 control-label">Weight</label>
+                                <div class="col-sm-4">
+                                    <input type="input" class="form-control" ng-change="checkWeightIsValid()"
+                                           ng-model="weight" id="weight"
+                                           placeholder="Weight" required>
+                                    <div class="validationMessage" ng-if="!weightIsValid"><p>Please enter a valid
+                                        weight</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div ng-class="{'has-error':(!motherIsValid)}">
+                                <label for="mother" class="col-sm-2 control-label">Mother</label>
+                                <div class="col-sm-4">
+                                    <input type="input" class="form-control" ng-change="checkMotherIsValid()"
+                                           ng-model="mother" id="mother"
+                                           placeholder="Mother" required>
+                                    <div class="validationMessage" ng-if="!motherIsValid"><p>Please enter a valid
+                                        name</p></div>
+                                </div>
+                            </div>
+                            <div ng-class="{'has-error':(!fatherIsValid)}">
+                                <label for="father" class="col-sm-2 control-label">Father</label>
+                                <div class="col-sm-4">
+                                    <input type="input" class="form-control" ng-change="checkFatherIsValid()"
+                                           ng-model="father" id="father"
+                                           placeholder="Father" required>
+                                    <div class="validationMessage" ng-if="!fatherIsValid"><p>Please enter a valid
+                                        name</p></div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
