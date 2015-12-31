@@ -1,9 +1,63 @@
 'use strict';
 
 // Children controller
-angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children',
-  function ($scope, $stateParams, $location, Authentication, Children) {
+angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children', 'ZScores',
+  function ($scope, $stateParams, $location, Authentication, Children, ZScores) {
     $scope.authentication = Authentication;
+    $scope.ageIsValid = false;
+    $scope.childHeightIsValid = false;
+    $scope.childweightIsValid = false;
+
+    $scope.calculateZScore = function(child){
+      $scope.zScore = new ZScores(child);
+    };
+
+    $scope.zScoreGetter = ZScores.getMethod;
+
+    $scope.setMonthCount = function() {
+      var months;
+      var birthDay = $scope.birthDate.getDate();
+      var birthYear = $scope.birthDate.getFullYear();
+      var birthMonth = $scope.birthDate.getMonth();
+      var rightNow = new Date();
+      months = (rightNow.getFullYear() - birthYear) * 12;
+      months -= rightNow.getMonth() + 1;
+      months += birthMonth;
+      $scope.monthAge = months <= 0 ? 0 : months;
+      if ($scope.monthAge > 60) {
+        $scope.ageIsValid = false;
+      }
+      else {
+        $scope.ageIsValid = true;
+        if($scope.childHeightIsValid && $scope.childWeightIsValid){
+          $scope.zScore = $scope.zScoreGetter($scope.gender,$scope.monthAge,$scope.height,$scope.weight);
+        }
+      }
+    };
+
+    $scope.checkHeightIsValid = function(){
+      if ($scope.height > 110){
+        $scope.childHeightIsValid = false;
+      }
+      else {
+        $scope.childHeightIsValid = true;
+        if($scope.ageIsValid && $scope.childWeightIsValid){
+          $scope.zScore = $scope.zScoreGetter($scope.gender,$scope.monthAge,$scope.height,$scope.weight);
+        }
+      }
+    };
+
+    $scope.checkWeightIsValid = function(){
+      if ($scope.weight > 19){
+        $scope.childweightIsValid = false;
+      }
+      else {
+        $scope.childWeightIsValid = true;
+        if($scope.ageIsValid && $scope.childHeightIsValid){
+          $scope.zScore = $scope.zScoreGetter($scope.gender,$scope.monthAge,$scope.height,$scope.weight);
+        }
+      }
+    };
 
     $scope.checkFirstNameIsValid = function(){
       if($scope.firstName.length < 1 || $scope.firstName.length > 25){
@@ -34,8 +88,7 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
     $scope.minStartDate = new Date(year-5,month,day);
 
     $scope.childInfoString = function(child){
-      return child.firstName + ' ' + child.lastName +
-            ' Birth Date: ' + child.birthMonth + '/' + child.birthDay + '/' + child.birthYear;
+      return child.firstName + ' ' + child.lastName + ' Birth Date: ' + child.birthDate;
     };
 
     // Create new Child
@@ -47,19 +100,24 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 
         return false;
       }
+      var birthDay = this.birthDate.getDate();
+      var birthYear = this.birthDate.getFullYear();
+      var birthMonth = this.birthDate.getMonth();
+      var months, ageInMonths;
+      var rightNow = new Date();
+      months = (rightNow.getFullYear() - birthYear) * 12;
+      months -= rightNow.getMonth() + 1;
+      months += birthMonth;
+      ageInMonths = months <= 0 ? 0 : months;
 
-      $scope.birthDay = this.dt.getDate();
-      $scope.birthYear = this.dt.getFullYear();
-      $scope.birthMonth = this.dt.getMonth();
 
       var child = new Children({
+        monthAge: ageInMonths,
+        birthDate: this.birthDate,
         firstName: this.firstName,
         lastName: this.lastName,
         weight: this.weight,
         height: this.height,
-        birthYear: this.birthDay,
-        birthMonth: this.birthMonth,
-        birthDay: this.birthYear,
         comments: this.comments,
         father: this.father,
         mother: this.mother
@@ -68,14 +126,13 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 
       child.$save(function (response) {
         $location.path('children/' + response._id);
+ //       $scope.birthDate = Date.now;
+        $scope.monthAge = 0;
         $scope.weight = '';
         $scope.height = '';
         $scope.firstName = '';
         $scope.lastName = '';
         $scope.comments = '';
-        $scope.birthYear = '';
-        $scope.birthMonth = '';
-        $scope.birthDay = '';
         $scope.father = '';
         $scope.mother = '';
    //     $scope.branch = '';

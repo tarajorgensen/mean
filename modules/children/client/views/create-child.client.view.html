@@ -29,23 +29,23 @@
                                 <input type="input" class="form-control" ng-model="gender" id="gender"
                                        placeholder="Gender" required>
                             </div>
-                            <label for="birthdate" class="col-sm-2 control-label">Birthdate</label>
+                            <label for="birthDate" class="col-sm-2 control-label">Birthdate</label>
                             <div class="col-sm-4">
-                                <input type="date" id="birthdate" class="form-control" uib-datepicker-popup
-                                       ng-model="dt"
+                                <input type="date" id="birthDate" ng-change="setMonthCount(child)" class="form-control" uib-datepicker-popup
+                                       ng-model="birthDate" ng-model-options="{debounce: 2500}"
                                        is-open="status.opened" required>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{'has-error':(!childHeightIsValid || !childWeightIsValid)}">
                             <label for="height" class="col-sm-2 control-label">Height</label>
                             <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="height" id="height"
-                                       placeholder="Height" required>
+                                <input type="input" class="form-control" ng-change="checkHeightIsValid()" ng-model="height" id="height"
+                                       ng-model-options="{debounce: 1500}" placeholder="Height" required >
                             </div>
                             <label for="weight" class="col-sm-2 control-label">Weight</label>
                             <div class="col-sm-4">
-                                <input type="input" class="form-control" ng-model="weight" id="weight"
-                                       placeholder="Weight" required>
+                                <input type="input" class="form-control" ng-change="checkWeightIsValid()" ng-model="weight" id="weight"
+                                       ng-model-options="{debounce: 1500}" placeholder="Weight" required >
                             </div>
                         </div>
                         <div class="form-group">
