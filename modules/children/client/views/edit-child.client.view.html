@@ -1,116 +1,82 @@
-<section ng-controller="ChildrenController" ng-init="findOne()">
+<<section ng-controller="ChildrenController" ng-init="findOne()">
   <div class="page-header">
     <h1>Edit Child</h1>
   </div>
   <div class="col-md-12">
     <form name="childForm" class="form-horizontal" ng-submit="update(childForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
+        <fieldset>
           <div class="row">
-            <div class="form-group col-md-6 "
-                 ng-class="{ 'has-error': childForm.firstName.$dirty && childForm.firstName.$invalid }">
-              <label class="control-label col-md-4" for="firstName">First Name</label>
-
-              <div class="controls">
-                <input name="First Name" type="text" ng-model="child.firstName" id="firstName"
-                       class="form-control col-md-2" placeholder="First Name" required>
+            <div class="form-group float-left" ng-class="{'has-error':(!firstNameIsValid)}">
+              <label for="child.firstName" class="col-sm-2 control-label">First Name</label>
+              <div class="col-sm-4">
+                <input class="form-control" type="text" ng-change="checkFirstNameIsValid()"
+                       ng-model="child.firstName" id="child.firstName" placeholder="First Name"
+                       required>
+              </div>
+              <label for="child.lastName" class="col-sm-2 control-label">Last Name</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-model="child.lastName" id="child.lastName"
+                       placeholder="Last Name"
+                       required>
               </div>
             </div>
-            <div class="form-group col-md-6">
-              <label class="control-label col-md-4" for="lastName">Last Name</label>
-
-              <div class="controls">
-                <input name="Last Name" type="text" ng-model="child.lastName" id="lastName"
-                       class="form-control col-md-2"
-                       placeholder="Last Name" required>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label class="control-label col-md-4" for="weight">Gender</label>
-
-              <div class="controls">
-                <input name="Gender" type="text" ng-model="child.gender" id="gender"
-                       class="form-control col-md-2"
+            <div class="form-group">
+              <label for="child.gender" class="col-sm-2 control-label">Gender</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-model="child.gender" id="child.gender"
                        placeholder="Gender" required>
-                <!--<select name="gender" class="form-control" multiple title="Select Gender">-->
-                <!--<option value="boy">Boy</option>-->
-                <!--<option value="girl">Girl</option>-->
-                <!--</select>-->
+              </div>
+              <label for="child.birthDate" class="col-sm-2 control-label">Birthdate</label>
+              <div class="col-sm-4">
+                <input type="date" id="child.birthDate" ng-change="setMonthCount()" class="form-control" uib-datepicker-popup
+                       ng-model="child.birthDate" ng-model-options="{debounce: 2500}"
+                       is-open="status.opened" required>
               </div>
             </div>
-            <div class="form-group col-md-6">
-              <label class="control-label col-md-4" for="weight">Birth Date</label>
-              <p class="input-group">
-                <input type="date" class="form-control" uib-datepicker-popup ng-model="dt"
-                       is-open="status.opened"
-                       min-date="minStartDate" max-date="maxDate" datepicker-options="dateOptions"
-                       ng-required="true" year-range="5"
-                       close-text="Close"/>
-              </p>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label class="control-label col-md-4" for="weight">Weight</label>
-
-                <div class="controls">
-                  <input name="Weight" type="text" ng-model="child.weight" id="weight"
-                         class="form-control col-md-2"
-                         placeholder="Weight" required>
-                </div>
+            <div class="form-group" ng-class="{'has-error':(!childHeightIsValid || !childWeightIsValid)}">
+              <label for="child.height" class="col-sm-2 control-label">Height</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-change="checkHeightIsValid()" ng-model="child.height" id="child.height"
+                       ng-model-options="{debounce: 1500}" placeholder="Height" required >
               </div>
-              <div class="form-group col-md-6">
-                <label class="control-label col-md-4" for="height">Height</label>
-
-                <div class="controls">
-                  <input name="Height" type="text" ng-model="child.height" id="height"
-                         class="form-control col-md-2"
-                         placeholder="Height" required>
-                </div>
+              <label for="child.weight" class="col-sm-2 control-label">Weight</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-change="checkWeightIsValid()" ng-model="child.weight" id="child.weight"
+                       ng-model-options="{debounce: 1500}" placeholder="Weight" required >
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label class="control-label col-md-4" for="mother">Mother</label>
-
-              <div class="controls">
-                <input name="Mother" type="text" ng-model="child.mother" id="mother"
-                       class="form-control col-md-2"
+            <div class="form-group">
+              <label for="child.mother" class="col-sm-2 control-label">Mother</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-model="child.mother" id="child.mother"
                        placeholder="Mother" required>
               </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label class="control-label col-md-4" for="father">Father</label>
-
-              <div class="controls">
-                <input name="Father" type="text" ng-model="child.father" id="father"
-                       class="form-control col-md-2"
+              <label for="child.father" class="col-sm-2 control-label">Father</label>
+              <div class="col-sm-4">
+                <input type="input" class="form-control" ng-model="child.father" id="child.father"
                        placeholder="Father" required>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label class="control-label col-md-2" for="comments">Comments</label>
-
-            <div class="controls">
-                <textarea name="Comment" ng-model="child.comments" id="comments" class="form-control"
-                          cols="50" rows="5" placeholder="Comment"></textarea>
+            <div class="form-group">
+              <label for="child.comments" class="col-sm-2 control-label">Comments</label>
+              <div class="col-sm-4">
+                                <textarea class="form-control" ng-model="child.comments" id="child.comments"
+                                          placeholder="Comments"></textarea>
+              </div>
+              <label for="child.comments" class="col-sm-2 control-label"></label>
+              <div class="col-sm-4" style="text-align: center">
+                <div style="margin-top:4%;">
+                  <button type="submit" ng-click="checkFirstNameIsValid()" class="btn btn-default">
+                    Submit
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <input type="submit"  value="Update" class="btn btn-default">
-        </div>
-        <div ng-show="error" class="text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-      </fieldset>
-    </form>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
   </div>
 </section>

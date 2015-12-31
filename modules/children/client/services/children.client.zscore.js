@@ -525,13 +525,13 @@ angular.module('children').factory('ZScores', ['$log', function (console) {
     var wa = weightForAgeGirls[age];
     var wl = null;
     for (var i = 0; i < weightForLengthGirls.length; i++) {
-      if (weightForLengthGirls[i].y === height){
+      if (weightForLengthGirls[i].y === Number(height)){
         wl = weightForLengthGirls[i];
         break;
       }
     }
-    var heightForAge = (height - ha.M)/(ha.M * ha.S);
-    var weightForAge = (Math.pow(weight/wa.M,wa.L)-1)/(wa.S*wa.L);
+    var heightForAge = (Number(height) - ha.M)/(ha.M * ha.S);
+    var weightForAge = (Math.pow(Number(weight)/wa.M,wa.L)-1)/(wa.S*wa.L);
     var weightForLength = (Math.pow(wl.y/wl.M,wl.L)-1)/(wl.S*wl.L);
     return heightForAge;
   };
