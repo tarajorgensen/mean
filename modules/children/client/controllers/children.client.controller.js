@@ -24,7 +24,6 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
       $scope.checkMotherIsValid();
       $scope.checkFatherIsValid();
 
-
       if ($scope.firstNameIsValid === true && $scope.lastNameIsValid === true && $scope.genderIsValid === true) {
         $scope.allFieldsValid = true;
       }
@@ -44,10 +43,9 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
       var birthYear = $scope.birthDate.getFullYear();
       var birthMonth = $scope.birthDate.getMonth();
       var rightNow = new Date();
-      months = (rightNow.getFullYear() - birthYear) * 12;
-      months -= rightNow.getMonth() + 1;
-      months += birthMonth;
-      $scope.monthAge = months <= 0 ? 0 : months;
+      var y1 = ((rightNow.getFullYear() - 2001) * 365) + (rightNow.getMonth() * 30.5) + rightNow.getDay();
+      var y2 = (birthYear - 2001) * 365 + ((birthMonth - 1) * 30.5) + birthDay;
+      $scope.monthAge = (y1 - y2)/30.5;;
       if ($scope.monthAge > 60) {
         $scope.ageIsValid = false;
       }
@@ -179,13 +177,12 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
       var birthDay = this.birthDate.getDate();
       var birthYear = this.birthDate.getFullYear();
       var birthMonth = this.birthDate.getMonth();
-      var months, ageInMonths;
-      var rightNow = new Date();
-      months = (rightNow.getFullYear() - birthYear) * 12;
-      months -= rightNow.getMonth() + 1;
-      months += birthMonth;
-      ageInMonths = months <= 0 ? 0 : months;
 
+      var rightNow = new Date();
+      var y1 = ((rightNow.getFullYear() - 2001) * 365) + (rightNow.getMonth() * 30.5) + rightNow.getDay();
+      var y2 = (birthYear - 2001) * 365 + ((birthMonth - 1) * 30.5) + birthDay;
+      var ageInMonths = (y1 - y2)/30.5;
+      $scope.zScore = $scope.zScoreGetter(this.gender,ageInMonths,this.height,this.weight);
 
       var child = new Children({
         monthAge: ageInMonths,
@@ -200,6 +197,7 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
  //       branch: this.branch
       });
 
+ //     PouchDB.createNewDB('SomeNewDB');
       child.$save(function (response) {
         $location.path('children/' + response._id);
  //       $scope.birthDate = Date.now;
