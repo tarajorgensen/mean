@@ -521,8 +521,8 @@ var weightForAgeBoys = [
 angular.module('children').factory('ZScores', ['$log', function (console) {
   console.log('in ZScores service');
   var getMethod = function(sex, age, height, weight) {
-    var ha = heightForAgeGirls[age];
-    var wa = weightForAgeGirls[age];
+    var ha = heightForAgeGirls[Math.round(age)-1];
+    var wa = weightForAgeGirls[Math.round(age)-1];
     var wl = null;
     for (var i = 0; i < weightForLengthGirls.length; i++) {
       if (weightForLengthGirls[i].y === Number(height)){
@@ -530,9 +530,9 @@ angular.module('children').factory('ZScores', ['$log', function (console) {
         break;
       }
     }
-    var heightForAge = (Number(height) - ha.M)/(ha.M * ha.S);
+    var heightForAge = (Number(height) - ha.M)/ha.S;
     var weightForAge = (Math.pow(Number(weight)/wa.M,wa.L)-1)/(wa.S*wa.L);
-    var weightForLength = (Math.pow(wl.y/wl.M,wl.L)-1)/(wl.S*wl.L);
+    var weightForLength = (Math.pow(Number(weight)/wl.M,wl.L)-1)/(wl.S*wl.L);
     return heightForAge;
   };
   return { getMethod: getMethod };
